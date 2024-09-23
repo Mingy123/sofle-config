@@ -27,7 +27,7 @@
 #define HSV_NUSH 100, 255, 100
 
 // Light combinations
-/* Diagram of the led indices
+/* Diagram of the led indices (+1 if indicator is enabled)
  *  On the right side they are added by 35
  * ,-----------------------------------------.         
  * |  10  |  11  |  20  |  21  |  30  |  31  |         
@@ -44,48 +44,48 @@
  */
 #define SET_UNDERGLOW(hsv) \
     {0, 7, hsv}, \
-    {35, 7,hsv}
+    {36, 7,hsv}
 #define SET_NUMPAD(hsv)     \
-    {35+15, 1, hsv},\
-    {35+17, 3, hsv},\
-      {35+22, 3, hsv},\
-      {35+27, 3, hsv}
+    {36+16, 1, hsv},\
+    {36+18, 3, hsv},\
+      {36+23, 3, hsv},\
+      {36+28, 3, hsv}
 #define SET_NUMROW(hsv) \
-    {10, 2, hsv}, \
-      {20, 2, hsv}, \
-      {30, 2, hsv}, \
-        {35+ 10, 2, hsv}, \
-        {35+ 20, 2, hsv}, \
-        {35+ 30, 2, hsv}
+    {11, 2, hsv}, \
+      21, 2, hsv}, \
+      {31, 2, hsv}, \
+        {36+ 11, 2, hsv}, \
+        {36+ 21, 2, hsv}, \
+        {36+ 31, 2, hsv}
 
 #define SET_INNER_COL(hsv)    \
-    {33, 4, hsv}, {35+ 33, 4, hsv}
+    {34, 4, hsv}, {36+ 34, 4, hsv}
 #define SET_OUTER_COL(hsv) \
-    {7, 4, hsv}, \
-      {35+ 7, 4, hsv}
+    {8, 4, hsv}, \
+      {36+ 8, 4, hsv}
 
 #define SET_WASD(hsv) \
-    {13, 1, hsv}, {18, 2, hsv}, {23, 1, hsv}
+    {14, 1, hsv}, {19, 2, hsv}, {24, 1, hsv}
 #define SET_HJKL(hsv) \
-    {35+18, 1, hsv}, {35+23, 1, hsv}, \
-    {35+28, 1, hsv}, {35+33, 1, hsv}
+    {36+19, 1, hsv}, {36+24, 1, hsv}, \
+    {36+29, 1, hsv}, {36+34, 1, hsv}
 
 #define SET_CODE(mineq, brace) \
-    {35+12, 2, brace}, {35+18, 2, brace}, \
-    {35+22, 2, mineq}, {35+28, 2, mineq}, \
-    {28, 2, brace}, {32, 2, brace}, \
-    {18, 2, mineq}, {22, 2, mineq}
+    {36+13, 2, brace}, {36+19, 2, brace}, \
+    {36+23, 2, mineq}, {36+29, 2, mineq}, \
+    {29, 2, brace}, {33, 2, brace}, \
+    {19, 2, mineq}, {23, 2, mineq}
 
 #define SET_THUMB_CLUSTER(hsv)     \
-    {25, 2, hsv}, \
-      {35+ 25, 2, hsv}
+    {26, 2, hsv}, \
+      {36+ 26, 2, hsv}
 #define SET_LAYER_ID(hsv)     \
     {0, 7, hsv}, \
-    {35, 7, hsv}, \
-      {7, 4, hsv}, \
-        {35+7, 4, hsv}, \
-      {25, 2, hsv}, \
-        {35+25, 2, hsv}
+    {36, 7, hsv}, \
+      {8, 4, hsv}, \
+        {36+8, 4, hsv}, \
+      {26, 2, hsv}, \
+        {36+26, 2, hsv}
 
 
 enum sofle_layers {
@@ -112,9 +112,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |-------+-----+------+------+------+------|                    |------+------+------+------+------+--------|
  * |  ESC  |  A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |   '    |
  * |-------+-----+------+------+------+------|  VOL  |    |  VOL  |------+------+------+------+------+--------|
- * |  SHFT |  Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  | Shift  |
+ * |  SHFT |  Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |  RAlt  |
  * `-----------------------------------------/       /     \      \-------------------------------------------'
- *            | MOVE | ALT  |  Win | Space| / CTRL  /       \ MOVE \  |ENTER | CODE | RCtl | RAlt |
+ *            | MOVE | ALT  |  Win | Space| / CTRL  /       \ ENTER\  | CODE | MOVE |Shift | RCtl |
  *            |      |      |      |      |/       /         \      \ |      |      |      |      |
  *            `-----------------------------------'           '------''---------------------------'
  */
@@ -126,9 +126,9 @@ LT(_NUMPAD,KC_GRV), KC_1, KC_2, KC_3,  KC_4,   KC_5,                         KC_
   //|------+-------+--------+--------+--------+------|                      |--------+-------+--------+--------+--------+---------|
   KC_ESC,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,   KC_K,    KC_L,    KC_SCLN, KC_QUOT,
   //|------+-------+--------+--------+--------+------|  ===  |      |  ===  |--------+-------+--------+--------+--------+---------|
-  KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  KC_EC11,      KC_MUTE, KC_N,    KC_M,   KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
+  KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  KC_EC11,      KC_MUTE, KC_N,    KC_M,   KC_COMM, KC_DOT,  KC_SLSH, KC_RALT,
   //|------+-------+--------+--------+--------+------|  ===  |      |  ===  |--------+-------+--------+--------+--------+---------|
-                 MO(_MOVE), KC_LALT, KC_LGUI,  KC_SPC, KC_LCTL,    MO(_MOVE),KC_ENT,MO(_CODE),KC_RCTL, KC_RALT
+                 MO(_MOVE), KC_LALT, KC_LGUI,  KC_SPC, KC_LCTL,    KC_ENT,MO(_CODE),MO(_MOVE),KC_RSFT, KC_RCTL
   //            \--------+--------+--------+---------+-------|      |--------+---------+--------+---------+-------/
 ),
 
@@ -156,7 +156,7 @@ LT(_NUMPAD,KC_GRV), KC_1, KC_2, KC_3,  KC_4,   KC_5,                         KC_
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
   _______, KC_WBAK, KC_WFWD, KC_CAPS, KC_END, KC_PGDN,_______,    _______,KC_WH_L, KC_WH_D, KC_WH_U,KC_WH_R, XXXXXXX,  _______,
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
-                 _______, _______, _______,  KC_ENT,  _______,    _______, KC_SPC, _______, _______, _______
+                 _______, _______, _______,  KC_ENT,  _______,    KC_SPC, _______, _______, _______, _______
   //            \--------+--------+--------+---------+-------|   |--------+---------+--------+---------+-------/
 ),
 /* CODE
@@ -183,7 +183,7 @@ LT(_NUMPAD,KC_GRV), KC_1, KC_2, KC_3,  KC_4,   KC_5,                         KC_
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
   _______, XXXXXXX,XXXXXXX,C(S(KC_C)), C(S(KC_V)), XXXXXXX,_______,   _______,XXXXXXX, XXXXXXX, _______, _______, _______, _______,
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
-                 _______, _______, _______, _______, _______,     _______, _______, _______, _______, KC_RCTL
+                 _______, _______, _______, _______, _______,     KC_SPC, _______, _______, _______, KC_RCTL
   //            \--------+--------+--------+---------+-------|   |--------+---------+--------+---------+-------/
 ),
 /* COMMAND
@@ -263,10 +263,19 @@ char layer_state_str[70];
  *            |      |      |      |      |/       /   
  *            `----------------------------------'     
  */
+
+
+
+const rgblight_segment_t PROGMEM layer_defaults_lights[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 1, HSV_BLACK},
+    {36, 1, HSV_BLACK}
+);
+
 const rgblight_segment_t PROGMEM layer_move_lights[] = RGBLIGHT_LAYER_SEGMENTS(
     SET_LAYER_ID(HSV_TEAL),
     SET_WASD(HSV_RED),
-    SET_HJKL(HSV_PINK)
+    SET_HJKL(HSV_PINK),
+    {25, 1, HSV_WHITE}
 );
 
 const rgblight_segment_t PROGMEM layer_code_lights[] = RGBLIGHT_LAYER_SEGMENTS(
@@ -276,38 +285,46 @@ const rgblight_segment_t PROGMEM layer_code_lights[] = RGBLIGHT_LAYER_SEGMENTS(
 
 const rgblight_segment_t PROGMEM layer_command_lights[] = RGBLIGHT_LAYER_SEGMENTS(
   SET_LAYER_ID(HSV_PURPLE),
-  {35+31, 1, HSV_WHITE},
-  {35+30, 1, HSV_TEAL},
-  {35+21, 1, HSV_BLUE},
-  {35+20, 1, HSV_ORANGE}
+  {36+32, 1, HSV_WHITE},
+  {36+31, 1, HSV_TEAL},
+  {36+22, 1, HSV_BLUE},
+  {36+21, 1, HSV_ORANGE}
 );
 
 //_NUMPAD
 const rgblight_segment_t PROGMEM layer_numpad_lights[] = RGBLIGHT_LAYER_SEGMENTS(
     SET_UNDERGLOW(HSV_ORANGE),
-    SET_NUMPAD(HSV_BLUE),
-    {7, 4, HSV_ORANGE},
-    {25, 2, HSV_ORANGE},
-    {35+6, 4, HSV_ORANGE},
-    {35+25, 2, HSV_ORANGE}
-    );
+    SET_NUMPAD(HSV_BLUE)
+);
+
+const rgblight_segment_t PROGMEM layer_capslock_lights[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 1, HSV_WHITE},
+    {36, 1, HSV_WHITE}
+);
 
 
 const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    layer_defaults_lights,
     layer_move_lights,// overrides layer 1
     layer_code_lights,
     layer_command_lights,
-    layer_numpad_lights
+    layer_numpad_lights,
+    layer_capslock_lights
 );
 
-// I think the normal uncommented lines is just mapping the index of the above array to the layer
-// Still no idea what the rgb commented one does
+bool led_update_user(led_t led_state) {
+    rgblight_set_layer_state(5, led_state.caps_lock);
+    return true;
+}
+
+// sets the layer state to some number (reflected in above array) based on the function conditional in second param
+// (probably)
 layer_state_t layer_state_set_user(layer_state_t state) {
-    //rgblight_set_layer_state(0, layer_state_cmp(state, _DEFAULTS) && layer_state_cmp(default_layer_state,_QWERTY));
-    rgblight_set_layer_state(0, layer_state_cmp(state, _MOVE));
-    rgblight_set_layer_state(1, layer_state_cmp(state, _CODE));
-    rgblight_set_layer_state(2, layer_state_cmp(state, _COMMAND));
-    rgblight_set_layer_state(3, layer_state_cmp(state, _NUMPAD));
+    rgblight_set_layer_state(0, layer_state_cmp(state, _DEFAULTS));
+    rgblight_set_layer_state(1, layer_state_cmp(state, _MOVE));
+    rgblight_set_layer_state(2, layer_state_cmp(state, _CODE));
+    rgblight_set_layer_state(3, layer_state_cmp(state, _COMMAND));
+    rgblight_set_layer_state(4, layer_state_cmp(state, _NUMPAD));
     return state;
 }
 
