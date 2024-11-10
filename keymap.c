@@ -26,6 +26,8 @@
 
 #define HSV_NUSH 100, 255, 100
 
+static int backlight_disable = 1;
+
 // Light combinations
 /* Diagram of the led indices (+1 if indicator is enabled)
  *  On the right side they are added by 35
@@ -98,8 +100,8 @@ enum sofle_layers {
 };
 
 enum custom_keycodes {
-    KC_QWERTY = SAFE_RANGE,
-    KC_EC11,
+    KC_EC11 = SAFE_RANGE,
+    BCK_TOG,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -126,9 +128,9 @@ LT(_NUMPAD,KC_GRV), KC_1, KC_2, KC_3,  KC_4,   KC_5,                         KC_
   //|------+-------+--------+--------+--------+------|                      |--------+-------+--------+--------+--------+---------|
   KC_ESC,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,   KC_K,    KC_L,    KC_SCLN, KC_QUOT,
   //|------+-------+--------+--------+--------+------|  ===  |      |  ===  |--------+-------+--------+--------+--------+---------|
-  KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  KC_EC11,      KC_MUTE, KC_N,    KC_M,   KC_COMM, KC_DOT,  KC_SLSH, KC_RALT,
+  KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  KC_EC11,      KC_MUTE, KC_N,    KC_M,   KC_COMM, KC_DOT,  KC_SLSH, KC_RCTL,
   //|------+-------+--------+--------+--------+------|  ===  |      |  ===  |--------+-------+--------+--------+--------+---------|
-                 MO(_MOVE), KC_LALT, KC_LGUI,  KC_SPC, KC_LCTL,    KC_ENT,MO(_CODE),MO(_MOVE),KC_RSFT, KC_RCTL
+                 MO(_MOVE), KC_LALT, KC_LGUI,  KC_SPC, KC_LCTL,    KC_ENT,MO(_CODE),MO(_MOVE),KC_RSFT, KC_RALT
   //            \--------+--------+--------+---------+-------|      |--------+---------+--------+---------+-------/
 ),
 
@@ -183,7 +185,7 @@ LT(_NUMPAD,KC_GRV), KC_1, KC_2, KC_3,  KC_4,   KC_5,                         KC_
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
   _______, XXXXXXX,XXXXXXX,C(S(KC_C)), C(S(KC_V)), XXXXXXX,_______,   _______,XXXXXXX, XXXXXXX, _______, _______, _______, _______,
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
-                 _______, _______, _______, _______, _______,     KC_SPC, _______, _______, _______, KC_RCTL
+                 _______, _______, _______, _______, _______,     KC_SPC, _______, _______, _______, _______
   //            \--------+--------+--------+---------+-------|   |--------+---------+--------+---------+-------/
 ),
 /* COMMAND
@@ -204,24 +206,24 @@ LT(_NUMPAD,KC_GRV), KC_1, KC_2, KC_3,  KC_4,   KC_5,                         KC_
   //,------------------------------------------------.                    ,---------------------------------------------------.
   EE_CLR,  XXXXXXX, KC_BRID, KC_BRIU, XXXXXXX, XXXXXXX,               TO(_QWERTY), TO(_MOVE), TO(_CODE), TO(_NUMPAD), XXXXXXX, XXXXXXX,
   //|------+-------+--------+--------+--------+------|                   |--------+-------+--------+--------+--------+---------|
-  RGB_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PSCR, XXXXXXX,
+  RGB_MOD, BCK_TOG, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PSCR, XXXXXXX,
   //|------+-------+--------+--------+--------+------|                   |--------+-------+--------+--------+--------+---------|
   RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX, XXXXXXX,                    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
-  _______, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, QK_BOOT,XXXXXXX,   XXXXXXX, XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, KC_RSFT,
+  _______, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, QK_BOOT,XXXXXXX,   XXXXXXX, XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX,
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
                    _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______
     //            \--------+--------+--------+---------+-------|   |--------+---------+--------+---------+-------/
 ),
 /* NUMPAD
  * ,-----------------------------------------.                    ,-----------------------------------------.
- * |      |      |      |      |      |      |                    |   /  |   ^  |   &  |   |  |      |      |
+ * |      |  1   |  2   |  3   |  4   |  5   |                    |   /  |   ^  |   &  |   |  |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |  `   |      |  F1  |  F2  |  F3  |  F4  |                    |   *  |   1  |   2  |   3  |      |      |
+ * |      |  6   |  7   |  8   |  9   |  10  |                    |   *  |   1  |   2  |   3  |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |      |  F5  |  F6  |  F7  |  F8  |-------.    ,-------|   -  |   4  |   5  |   6  |   ,  |      |
+ * |      |      |  F7  |  F8  |  F9  |      |-------.    ,-------|   -  |   4  |   5  |   6  |   ,  |      |
  * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
- * |      |      |  F9  |  F10 |  F11 |  F12 |-------|    |-------|   +  |   7  |   8  |   9  |   =  |      |
+ * |      |      | F10  | F11  | F12  |      |-------|    |-------|   +  |   7  |   8  |   9  |   =  |      |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
  *            |      |      |      |      | /       /       \      \  |      |  .   |  0   | Ret  |
  *            |      |      |      |      |/       /         \      \ |      |      |      |      |
@@ -229,13 +231,13 @@ LT(_NUMPAD,KC_GRV), KC_1, KC_2, KC_3,  KC_4,   KC_5,                         KC_
  */
 [_NUMPAD] = LAYOUT(
   //,------------------------------------------------.                    ,---------------------------------------------------.
-  _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   KC_SLSH, KC_CIRC, KC_AMPR, KC_PIPE, XXXXXXX, XXXXXXX,
+    _______, KC_1,   KC_2,    KC_3,    KC_4,   KC_5,                      KC_SLSH, KC_CIRC, KC_AMPR, KC_PIPE, XXXXXXX, XXXXXXX,
   //|------+-------+--------+--------+--------+------|                   |--------+-------+--------+--------+--------+---------|
-  XXXXXXX, XXXXXXX, KC_F1,   KC_F2,   KC_F3,   KC_F4,                     KC_ASTR,  KC_1,   KC_2,    KC_3,   XXXXXXX, _______,
+    XXXXXXX, KC_6,   KC_7,    KC_8,    KC_9,   KC_0,                      KC_ASTR,  KC_1,   KC_2,    KC_3,   XXXXXXX, _______,
   //|------+-------+--------+--------+--------+------|                   |--------+-------+--------+--------+--------+---------|
-  XXXXXXX, XXXXXXX, KC_F5,   KC_F6,   KC_F7,   KC_F8,                     KC_MINS,  KC_4,   KC_5,    KC_6,   KC_COMM, XXXXXXX,
+    XXXXXXX,XXXXXXX, KC_F7,   KC_F8,   KC_F9,  XXXXXXX,                   KC_MINS,  KC_4,   KC_5,    KC_6,   KC_COMM, XXXXXXX,
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
-  XXXXXXX, XXXXXXX, KC_F9,   KC_F10,  KC_F11,  KC_F12,_______,    _______,KC_PLUS,  KC_7,   KC_8,    KC_9,   KC_EQL,  _______,
+    XXXXXXX,XXXXXXX, KC_F10,  KC_F11,  KC_F12, XXXXXXX,_______,   _______,KC_PLUS,  KC_7,   KC_8,    KC_9,   KC_EQL,  _______,
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
                  _______, _______, _______, _______, _______,     _______, _______, KC_DOT, KC_0,  KC_ENT
   //            \--------+--------+--------+---------+-------|   |--------+---------+--------+---------+-------/
@@ -243,10 +245,7 @@ LT(_NUMPAD,KC_GRV), KC_1, KC_2, KC_3,  KC_4,   KC_5,                         KC_
 };
 
 #ifdef RGBLIGHT_ENABLE
-char layer_state_str[70];
 // Now define the array of layers. Later layers take precedence
-
-
 
 /* Diagram of the led indices
  *  On the right side they are added by 35
@@ -302,29 +301,34 @@ const rgblight_segment_t PROGMEM layer_capslock_lights[] = RGBLIGHT_LAYER_SEGMEN
     {36, 1, HSV_WHITE}
 );
 
+const rgblight_segment_t PROGMEM layer_noback_lights[] = RGBLIGHT_LAYER_SEGMENTS(
+    {1, 6, HSV_BLACK},
+    {36+1, 6, HSV_BLACK}
+);
 
+// further layers override above ones (by each led)
 const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     layer_defaults_lights,
-    layer_move_lights,// overrides layer 1
+    layer_noback_lights,
+    layer_move_lights,
     layer_code_lights,
     layer_command_lights,
     layer_numpad_lights,
     layer_capslock_lights
 );
 
+
 bool led_update_user(led_t led_state) {
-    rgblight_set_layer_state(5, led_state.caps_lock);
+    rgblight_set_layer_state(6, led_state.caps_lock);
     return true;
 }
 
-// sets the layer state to some number (reflected in above array) based on the function conditional in second param
-// (probably)
 layer_state_t layer_state_set_user(layer_state_t state) {
     rgblight_set_layer_state(0, layer_state_cmp(state, _DEFAULTS));
-    rgblight_set_layer_state(1, layer_state_cmp(state, _MOVE));
-    rgblight_set_layer_state(2, layer_state_cmp(state, _CODE));
-    rgblight_set_layer_state(3, layer_state_cmp(state, _COMMAND));
-    rgblight_set_layer_state(4, layer_state_cmp(state, _NUMPAD));
+    rgblight_set_layer_state(2, layer_state_cmp(state, _MOVE));
+    rgblight_set_layer_state(3, layer_state_cmp(state, _CODE));
+    rgblight_set_layer_state(4, layer_state_cmp(state, _COMMAND));
+    rgblight_set_layer_state(5, layer_state_cmp(state, _NUMPAD));
     return state;
 }
 
@@ -333,6 +337,7 @@ void keyboard_post_init_user(void) {
     // Enable the LED layers
     rgblight_layers = my_rgb_layers;
     rgblight_mode(10);// haven't found a way to set this in a more useful way
+    rgblight_set_layer_state(1, backlight_disable);
 }
 #endif
 
@@ -378,7 +383,6 @@ static void print_base(void) {
 
 
 static void print_status(void) {
-    //snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Undef-%ld", layer_state)
     oled_clear();
     switch (get_highest_layer(layer_state)) {
         case _MOVE:
@@ -416,13 +420,19 @@ bool oled_task_user(void) {
 // processing custom keycodes
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case KC_QWERTY:
-            if (record->event.pressed) {
-                set_single_persistent_default_layer(_QWERTY);
-            }
-            return false;
+        //case KC_QWERTY:
+        //    if (record->event.pressed) {
+        //        set_single_persistent_default_layer(_QWERTY);
+        //    }
+        //    return false;
         case KC_EC11:
-            // TODO: decide on something to do when the scrolling wheel is pressed
+            // TODO: decide on smt to do when left scrolling wheel is pressed
+            return false;
+        case BCK_TOG:
+            if (record->event.pressed) {
+                backlight_disable ^= 1;
+                rgblight_set_layer_state(1, backlight_disable);
+            }
             return false;
     }
     return true;
@@ -431,13 +441,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #ifdef ENCODER_ENABLE
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (index == 0) {
+    int is_volume = 1; // 0 means is scroll
+    if (layer_state_is(_MOVE))
+        is_volume ^= 1;
+    if (index != is_volume) {
         if (clockwise) {
             tap_code(KC_WH_D);
         } else {
             tap_code(KC_WH_U);
         }
-    } else if (index == 1) {
+    } else {
         if (clockwise) {
             tap_code(KC_VOLU);
         } else {
@@ -445,27 +458,6 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         }
     }
     return false;
-/*
-    switch (get_highest_layer(layer_state)) {
-        case _QWERTY:
-            if (clockwise) {
-                tap_code(KC_PGDN);
-            } else {
-                tap_code(KC_PGUP);
-            }
-        break;
-    case _CODE:
-    case _MOVE:
-            if (clockwise) {
-                tap_code(KC_DOWN);
-            } else {
-                tap_code(KC_UP);
-            }
-        break;
-    default:
-        break;
-    }
-*/
 }
 
 #endif
