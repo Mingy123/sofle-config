@@ -114,9 +114,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |-------+-----+------+------+------+------|                    |------+------+------+------+------+--------|
  * |  ESC  |  A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |   '    |
  * |-------+-----+------+------+------+------|  VOL  |    |  VOL  |------+------+------+------+------+--------|
- * |  SHFT |  Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |  RAlt  |
+ * |  SHFT |  Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |  RCtl  |
  * `-----------------------------------------/       /     \      \-------------------------------------------'
- *            | MOVE | ALT  |  Win | Space| / CTRL  /       \ ENTER\  | CODE | MOVE |Shift | RCtl |
+ *            | MOVE | ALT  |  Win | Space| / CTRL  /       \ ENTER\  | CODE | MOVE |Shift | Win  |
  *            |      |      |      |      |/       /         \      \ |      |      |      |      |
  *            `-----------------------------------'           '------''---------------------------'
  */
@@ -130,7 +130,7 @@ LT(_NUMPAD,KC_GRV), KC_1, KC_2, KC_3,  KC_4,   KC_5,                         KC_
   //|------+-------+--------+--------+--------+------|  ===  |      |  ===  |--------+-------+--------+--------+--------+---------|
   KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  KC_EC11,      KC_MUTE, KC_N,    KC_M,   KC_COMM, KC_DOT,  KC_SLSH, KC_RCTL,
   //|------+-------+--------+--------+--------+------|  ===  |      |  ===  |--------+-------+--------+--------+--------+---------|
-                 MO(_MOVE), KC_LALT, KC_LGUI,  KC_SPC, KC_LCTL,    KC_ENT,MO(_CODE),MO(_MOVE),KC_RSFT, KC_RALT
+                 MO(_MOVE), KC_LALT, KC_LGUI,  KC_SPC, KC_LCTL,    KC_ENT,MO(_CODE),MO(_MOVE),KC_RSFT, KC_RWIN
   //            \--------+--------+--------+---------+-------|      |--------+---------+--------+---------+-------/
 ),
 
@@ -398,7 +398,7 @@ static void print_status(void) {
 }
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-    return rotation;
+    return OLED_ROTATION_0;
 /*
     if (is_keyboard_master()) {
         return OLED_ROTATION_270;
