@@ -1,5 +1,6 @@
 # sofle-config
-dotfiles for sofle rgb keyboard
+
+Build files for my sofle rgb keyboard's QMK configuration
 
 # Installation
 Pull the qmk firmware repository: `git pull https://github.com/qmk/qmk_firmware/`  
