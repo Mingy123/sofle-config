@@ -23,6 +23,8 @@
 ///https://thomasbaart.nl/2018/12/01/reducing-firmware-size-in-qmk/
 
 
+#define OLED_DISABLE_TIMEOUT
+
 // #define MASTER_LEFT
 #define NO_ACTION_ONESHOT
 #define MASTER_RIGHT
