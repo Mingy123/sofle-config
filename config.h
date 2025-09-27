@@ -52,7 +52,6 @@
 
 #ifdef RGB_MATRIX_ENABLE
 #define RGBLED_NUM 36    // Number of LEDs
-#define RGBLED_NUM 36    // Number of LEDs
 #define RGB_MATRIX_LED_COUNT RGBLED_NUM
 #endif
 
